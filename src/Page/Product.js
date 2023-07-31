@@ -30,12 +30,47 @@ const Product = () => {
       console.log("Delete Product", response.data);
       getProduct();
     });
-
   };
 
-  const updateProduct =()=>{
+  // const searchHandle = (e) => {
+  //   console.log(e.target.value);
+  //   let key = e.target.value;
+  //   if (key) {
+  //     fetch(`http://localhost:8500/search/${key}`)
+  //       .then((result) => result.json())
+  //       .then((data) => {
+  //         if (data && data.data && data.data.product) {
+  //           setProduct(data.data.product);
+  //           console.log("get single response data:", data.data.product);
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error searching for product:", error);
+  //       });
+  //   } else {
+  //     getProduct();
+  //   }
+  // };
+  
 
-  }
+
+  const searchHandle = async (e) => {
+    console.log(e.target.value);
+    let key = e.target.value;
+    if (key) {
+      let result = await fetch(`http://localhost:8500/search/${key}`);
+      let data = await result.json();
+   
+      if (data) {
+        setProduct(data);
+        console.log("search data:", data);
+      }
+    } else {
+      getProduct();
+    }
+  };
+
+  // const updateProduct = () => {};
   // const getProduct = () => {
   //   api.get("/products").then((response) => {
   //     console.log(response.data.product);
@@ -65,6 +100,20 @@ const Product = () => {
       <NavbarComp />
       <h5 className="text-center mt-3">Product Page </h5>
       <div className="container-fluid">
+        {/*   Search Product  */}
+        <div className="row justify-content-center mt-3 mb-3">
+          <div className="col-sm-8">
+            <input
+              type="text"
+              className="form-control"
+              onChange={searchHandle}
+              id="inputSearch"
+              placeholder="🔍 Search Your Product"
+              autoFocus
+            />
+          </div>
+        </div>
+        {/* ******  Product List *********** */}
         <div className="row justify-content-center mt-3">
           <div className="col-md-10">
             <table className="table table-bordered border-danger mt-2">
@@ -98,7 +147,9 @@ const Product = () => {
                         <td>
                           <Link
                             className="btn btn-danger"
-                            to={"/update-product/"+item._id}>update
+                            to={"/update-product/" + item._id}
+                          >
+                            update
                           </Link>
                         </td>
                       </tr>
@@ -106,7 +157,7 @@ const Product = () => {
                   })
                 ) : (
                   <tr>
-                    <td colSpan="4">No products available.</td>
+                    <td colSpan="4">No Products available.</td>
                   </tr>
                 )}
               </tbody>
