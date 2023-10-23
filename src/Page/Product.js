@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import NavbarComp from "../components/NavbarComp";
-import FooterComp from "../components/FooterComp";
 import api from "../api/userApi";
 import { Link } from "react-router-dom";
 
@@ -97,7 +95,7 @@ const Product = () => {
   // };
   return (
     <>
-      <NavbarComp />
+     
       <h5 className="text-center mt-3">Product Page </h5>
       <div className="container-fluid">
         {/*   Search Product  */}
@@ -166,7 +164,7 @@ const Product = () => {
         </div>
       </div>
 
-      <FooterComp />
+   
     </>
   );
 };

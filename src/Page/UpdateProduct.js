@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import NavbarComp from "../components/NavbarComp";
-import FooterComp from "../components/FooterComp";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import "./App.css";
@@ -68,7 +66,7 @@ const UpdateProduct = () => {
 
   return (
     <>
-      <NavbarComp />
+     
       <h5 className="text-center mt-3">Update Product </h5>
       <div className="container-fluid">
         <div className="row d-flex justify-content-center">
@@ -154,7 +152,7 @@ const UpdateProduct = () => {
           </div>
         </div>
       </div>
-      <FooterComp />
+    
     </>
   );
 };

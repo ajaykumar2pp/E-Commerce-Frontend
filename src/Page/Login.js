@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import NavbarComp from "../components/NavbarComp";
-import FooterComp from "../components/FooterComp";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -40,7 +38,7 @@ const Login = () => {
 
   return (
     <>
-      <NavbarComp />
+    
 
       <h2 className="text-center App">Login User</h2>
       <div className="container">
@@ -92,7 +90,7 @@ const Login = () => {
         </div>
       </div>
 
-      <FooterComp />
+    
     </>
   );
 };

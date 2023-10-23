@@ -1,11 +1,11 @@
 import React from 'react'
 import { Link } from "react-router-dom"
-import NavbarComp from '../components/NavbarComp'
+
 
 const PageNotFound = () => {
     return (
         <div>
-       <NavbarComp />
+      
         <h2 className='text-center text-body-secondary mt-5'>Page Not Found </h2>
         <h4 className='text-center text-danger mt-5' >404</h4>
          <div>

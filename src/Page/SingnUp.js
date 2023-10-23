@@ -1,6 +1,4 @@
 import React, { useState,useEffect } from "react";
-import NavbarComp from "../components/NavbarComp";
-import FooterComp from "../components/FooterComp";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -44,7 +42,7 @@ const SingnUp = () => {
 
   return (
     <>
-      <NavbarComp />
+     
       <div className="">
         <h2 className="text-center App">Register User</h2>
         <div className="container">
@@ -112,7 +110,7 @@ const SingnUp = () => {
           </div>
         </div>
       </div>
-      <FooterComp />
+      
     </>
   );
 };

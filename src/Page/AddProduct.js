@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import NavbarComp from "../components/NavbarComp";
-import FooterComp from "../components/FooterComp";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./App.css"
@@ -10,20 +8,21 @@ const AddProduct = () => {
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [company, setCompany] = useState("");
-  const [error,setError] = useState(false)
+  const [error, setError] = useState(false)
   const navigate = useNavigate();
 
 
   const handleSave = async (e) => {
     console.log(name, price, quantity, company);
     e.preventDefault();
-    if(!name || !price || !quantity || !company){
+    if (!name || !price || !quantity || !company) {
       setError(true)
       return false;
     }
     try {
-      const userId = JSON.parse(localStorage.getItem("user"))._id;
+      const userId = JSON.parse(localStorage.getItem("user")).data.user._id;
       console.log(userId);
+
       let response = await axios.post("http://localhost:8500/products/add-product",
         {
           name: name,
@@ -37,20 +36,20 @@ const AddProduct = () => {
       console.log(response.data);
       alert("Product Add");
 
-      navigate("/");
+      navigate("/product");
     } catch (error) {
       console.error("Error during API call:", error);
     }
     // Reset the form inputs
-    setName(" ");
-    setPrice(" ");
-    setQuantity(" ");
-    setCompany(" ");
+    setName("");
+    setPrice("");
+    setQuantity("");
+    setCompany("");
   };
 
   return (
     <>
-      <NavbarComp />
+
 
       <h5 className="text-center mt-4 text-body-tertiary">Add Product </h5>
       <div className="container">
@@ -73,7 +72,7 @@ const AddProduct = () => {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
-               {error && !name && <div className="valid text-danger">Plz valid name</div>} 
+                {error && !name && <div className="valid text-danger">Plz valid name</div>}
               </div>
               {/* Price */}
               <div className="mb-3">
@@ -90,7 +89,7 @@ const AddProduct = () => {
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                 />
-                   {error && !price && <div className="valid text-danger">Plz valid price</div>}
+                {error && !price && <div className="valid text-danger">Plz valid price</div>}
               </div>
               {/* Quanity */}
               <div className="mb-3">
@@ -107,7 +106,7 @@ const AddProduct = () => {
                   value={quantity}
                   onChange={(e) => setQuantity(e.target.value)}
                 />
-                    {error && !quantity && <div className="valid text-danger">Plz valid quantity</div>}
+                {error && !quantity && <div className="valid text-danger">Plz valid quantity</div>}
               </div>
               {/* company*/}
               <div className="mb-3">
@@ -124,7 +123,7 @@ const AddProduct = () => {
                   value={company}
                   onChange={(e) => setCompany(e.target.value)}
                 />
-                    {error && !company && <div className="valid text-danger">Plz valid company</div>}
+                {error && !company && <div className="valid text-danger">Plz valid company</div>}
               </div>
               <button
                 type="submit"
@@ -138,7 +137,7 @@ const AddProduct = () => {
         </div>
       </div>
 
-      <FooterComp />
+    
     </>
   );
 };

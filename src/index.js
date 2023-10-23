@@ -15,10 +15,13 @@ import Login from "./Page/Login";
 import Product from "./Page/Product";
 import AddProduct from "./Page/AddProduct";
 import UpdateProduct from "./Page/UpdateProduct";
+import NavbarComp from "./components/NavbarComp";
+import FooterComp from "./components/FooterComp";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
+    <NavbarComp />
     <Routes>
 
       <Route element={<PrivateComp />}>
@@ -29,11 +32,12 @@ root.render(
         <Route path="/profile" element={<Profile />} />
         <Route path="/update-product/:_id" element={<UpdateProduct />} />
       </Route>
-      
+
       <Route path="/signup" element={<SingnUp />} />
       <Route path="/login" element={<Login />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
+    <FooterComp />
   </BrowserRouter>
 );
 
