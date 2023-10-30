@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./App.css"
@@ -8,14 +8,15 @@ const AddProduct = () => {
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [company, setCompany] = useState("");
+  const [image, setImage] = useState(null)
   const [error, setError] = useState(false)
   const navigate = useNavigate();
 
 
   const handleSave = async (e) => {
-    console.log(name, price, quantity, company);
+    console.log(name, price, quantity, company, image);
     e.preventDefault();
-    if (!name || !price || !quantity || !company) {
+    if (!name || !price || !quantity || !company || !image) {
       setError(true)
       return false;
     }
@@ -23,15 +24,33 @@ const AddProduct = () => {
       const userId = JSON.parse(localStorage.getItem("user")).data.user._id;
       console.log(userId);
 
+      // Use FormData to send multipart/form-data
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("price", price);
+      formData.append("quantity", quantity);
+      formData.append("company", company);
+      formData.append("userId", userId);
+      formData.append("image", image);
+
       let response = await axios.post("http://localhost:8500/products/add-product",
-        {
-          name: name,
-          price: price,
-          quantity: quantity,
-          company: company,
-          userId: userId,
+      formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
         }
-      );
+      });
+        // {
+        //   name: name,
+        //   price: price,
+        //   quantity: quantity,
+        //   company: company,
+        //   userId: userId,
+        //   image: image
+        // },
+        // headers: {
+        //   "Content-Type": "multipart/form-data",
+        // }
+      // );
 
       console.log(response.data);
       alert("Product Add");
@@ -45,6 +64,7 @@ const AddProduct = () => {
     setPrice("");
     setQuantity("");
     setCompany("");
+    setImage(null);
   };
 
   return (
@@ -125,6 +145,23 @@ const AddProduct = () => {
                 />
                 {error && !company && <div className="valid text-danger">Plz valid company</div>}
               </div>
+              {/* Image uplaod */}
+              <div className="mb-3">
+                <label htmlFor="name" className="form-label">
+                  Image Upload
+                </label>
+                <input
+                  type="file"
+                  className="form-control"
+                  id="image"
+                  name="image"
+
+                  aria-describedby="image"
+
+                  onChange={(e) => setImage(e.target.files[0])}
+                />
+                {error && !image && <div className="valid text-danger">Plz upload image</div>}
+              </div>
               <button
                 type="submit"
                 className="btn btn-primary mb-5"
@@ -137,7 +174,7 @@ const AddProduct = () => {
         </div>
       </div>
 
-    
+
     </>
   );
 };

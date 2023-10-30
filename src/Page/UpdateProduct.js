@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import "./App.css";
+import "./UpdateProduct.css";
 
 
 
@@ -11,13 +11,15 @@ const UpdateProduct = () => {
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [company, setCompany] = useState("");
+  const [image, setImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
   const navigate = useNavigate();
-    const params =useParams()
+  const params = useParams()
 
-  useEffect(()=>{
-     console.log(params)
-     getProductDetails();
-  },[])
+  useEffect(() => {
+    console.log(params)
+    getProductDetails();
+  }, [])
 
   const getProductDetails = async () => {
     try {
@@ -30,25 +32,32 @@ const UpdateProduct = () => {
       setCompany(data.company)
     } catch (error) {
       console.error("Error fetching product data:", error);
-      
+
     }
   };
 
-  const  updateProduct = async (e) => {
+  const updateProduct = async (e) => {
     console.log(name, price, quantity, company);
     e.preventDefault();
-   
+
     try {
-   
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("price", price);
+      formData.append("quantity", quantity);
+      formData.append("company", company);
+      formData.append("image", image);
+
       let response = await axios.put(
         `http://localhost:8500/products/${params._id}`,
-        {
-          name: name,
-          price: price,
-          quantity: quantity,
-          company: company,
-       
-        }
+        formData
+        // {
+        //   name: name,
+        //   price: price,
+        //   quantity: quantity,
+        //   company: company,
+
+        // }
       );
 
       console.log(response.data);
@@ -62,11 +71,12 @@ const UpdateProduct = () => {
     setPrice(" ");
     setQuantity(" ");
     setCompany(" ");
+    setImage(null);
   };
 
   return (
     <>
-     
+
       <h5 className="text-center mt-3">Update Product </h5>
       <div className="container-fluid">
         <div className="row d-flex justify-content-center">
@@ -88,7 +98,7 @@ const UpdateProduct = () => {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
-              
+
               </div>
               {/* Price */}
               <div className="mb-3">
@@ -105,7 +115,7 @@ const UpdateProduct = () => {
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                 />
-              
+
               </div>
               {/* Quanity */}
               <div className="mb-3">
@@ -122,7 +132,7 @@ const UpdateProduct = () => {
                   value={quantity}
                   onChange={(e) => setQuantity(e.target.value)}
                 />
-               
+
               </div>
               {/* company*/}
               <div className="mb-3">
@@ -139,20 +149,45 @@ const UpdateProduct = () => {
                   value={company}
                   onChange={(e) => setCompany(e.target.value)}
                 />
-               
+
               </div>
+              {/* Image uplaod */}
+              <div className="mb-3">
+                <label htmlFor="name" className="form-label">
+                  Image Upload
+                </label>
+                <input
+                  type="file"
+                  className="form-control"
+                  id="image"
+                  name="image"
+                  aria-describedby="image"
+                  onChange={
+                    (e) => 
+                    {
+                      setImage(e.target.files[0]);
+                      const url = URL.createObjectURL(e.target.files[0]);
+                      setPreviewImage(url);
+                    }
+                  }
+                />
+
+              </div>
+              {previewImage && (
+                <img src={previewImage} alt="Product Preview" className="preview-image" />
+              )}
               <button
                 type="submit"
                 className="btn btn-success mb-5"
-                onClick={ updateProduct}
+                onClick={updateProduct}
               >
-               Update Product
+                Update Product
               </button>
             </form>
           </div>
         </div>
       </div>
-    
+
     </>
   );
 };

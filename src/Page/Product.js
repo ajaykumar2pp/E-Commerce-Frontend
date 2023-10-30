@@ -30,26 +30,6 @@ const Product = () => {
     });
   };
 
-  // const searchHandle = (e) => {
-  //   console.log(e.target.value);
-  //   let key = e.target.value;
-  //   if (key) {
-  //     fetch(`http://localhost:8500/search/${key}`)
-  //       .then((result) => result.json())
-  //       .then((data) => {
-  //         if (data && data.data && data.data.product) {
-  //           setProduct(data.data.product);
-  //           console.log("get single response data:", data.data.product);
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error searching for product:", error);
-  //       });
-  //   } else {
-  //     getProduct();
-  //   }
-  // };
-  
 
 
   const searchHandle = async (e) => {
@@ -68,31 +48,7 @@ const Product = () => {
     }
   };
 
-  // const updateProduct = () => {};
-  // const getProduct = () => {
-  //   api.get("/products").then((response) => {
-  //     console.log(response.data.product);
-
-  //     if (Array.isArray(response.data.product)) {
-  //       setProduct(response.data.product);
-  //     } else {
-  //       setProduct([]);
-  //     }
-  //   });
-  // };
-
-  // const getProduct = async () => {
-  //   try {
-  //     const response = await api.get("/products");
-  //     // console.log(response.data);
-  //     //     // Assuming the array of products is directly in the data property
-  //     setProduct(response.data.product);
-  //     console.log("API response data:", response.data.product);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //     setProduct([]);
-  //   }
-  // };
+ 
   return (
     <>
      
@@ -118,6 +74,7 @@ const Product = () => {
               <thead className="text-center fs-6">
                 <tr>
                   <th scope="col">Sr.No.</th>
+                  <th scope="col">Image</th>
                   <th scope="col">Name</th>
                   <th scope="col">Price</th>
                   <th scope="col">Company</th>
@@ -126,11 +83,12 @@ const Product = () => {
                 </tr>
               </thead>
               <tbody className="text-center fs-6">
-                {product.length > 0 ? (
+                {Array.isArray(product) && product.length > 0 ? (
                   product.map((item, index) => {
                     return (
                       <tr key={item._id}>
                         <td>{index + 1}</td>
+                        <img src={item.image} alt={item.name} width="100" height="100" />
                         <td>{item.name}</td>
                         <td>{item.price}</td>
                         <td>{item.company}</td>
