@@ -1,6 +1,8 @@
 import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SingnUp = () => {
   const [name, setName] = useState("");
@@ -28,16 +30,17 @@ const SingnUp = () => {
       });
   
       console.log(response.data);
-      alert("Add User");
+      toast("User Register Sccessfully");
+      // alert("Add User");
       localStorage.setItem("user", JSON.stringify(response.data));
       navigate("/login");
     } catch (error) {
       console.error("Error during API call:", error);
     }
 // Reset the form inputs
-    setName(" ");
-    setEmail(" ");
-    setPassword(" ");
+    setName("");
+    setEmail("");
+    setPassword("");
   };
 
   return (
@@ -105,6 +108,7 @@ const SingnUp = () => {
                 >
                   Sign Up
                 </button>
+                <ToastContainer />
               </form>
             </div>
           </div>

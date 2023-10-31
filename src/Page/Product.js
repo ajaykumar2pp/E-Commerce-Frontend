@@ -88,7 +88,9 @@ const Product = () => {
                     return (
                       <tr key={item._id}>
                         <td>{index + 1}</td>
+                        <td>
                         <img src={item.image} alt={item.name} width="100" height="100" />
+                        </td>
                         <td>{item.name}</td>
                         <td>{item.price}</td>
                         <td>{item.company}</td>

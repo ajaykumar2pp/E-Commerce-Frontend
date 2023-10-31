@@ -1,24 +1,25 @@
 import React from 'react'
 import { Link } from "react-router-dom"
+import error from '../Image/error-image.avif'
 
 
 const PageNotFound = () => {
     return (
-        <div>
-      
-        <h2 className='text-center text-body-secondary mt-5'>Page Not Found </h2>
-        <h4 className='text-center text-danger mt-5' >404</h4>
-         <div>
+        <div className="container-fluid">
             <div className="row">
-                <div className="col-md-12 d-flex justify-content-center">
-                <Link to="/" className='py-2  fw-semibold text-decoration-none'>Go to Home Page</Link>
+                <div className="col-md-12 ">
+                    <div className='d-flex justify-content-center'>
+                        <img src={error} alt="error-404" />
+                    </div>
+                    <div className='d-flex justify-content-center'>
+                        <Link to="/" className='p-3 rounded-2 text-white bg-secondary opacity-75 fw-semibold text-decoration-none'>Go to Home Page</Link>
+                    </div>
                 </div>
             </div>
-         </div>
-     
         </div>
-     
-      )
+
+
+    )
 }
 
 export default PageNotFound

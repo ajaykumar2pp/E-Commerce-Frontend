@@ -5,7 +5,22 @@ import Navbar from "react-bootstrap/Navbar";
 import { Link, useNavigate } from "react-router-dom";
 
 const NavbarComp = () => {
-  const auth = localStorage.getItem("user");
+  // const auth = localStorage.getItem("user");
+
+
+  const auth = JSON.parse(localStorage.getItem("user"));
+
+  if (auth && auth.data && auth.data.user) {
+    const username = auth.data.user.username;
+    const email = auth.data.user.email;
+
+    console.log(`Username: ${username}`);
+    console.log(`Email: ${email}`);
+  } else {
+    console.log("User data not found in localStorage");
+  }
+
+  console.log(auth) 
   const navigate = useNavigate();
   const logout = () => {
     console.log("user logout");
@@ -66,9 +81,19 @@ const NavbarComp = () => {
                   to="/"
                   className="py-2 ps-3 pe-4 text-secondary   fw-semibold text-decoration-none"
                 >
-                 { JSON.parse(auth).username} 
+                  {/* {JSON.parse(auth).username} */}
+                 { auth.data.user.username}
+               
+                </Link>
+                <Link
+                  to="/"
+                  className="py-2 ps-3 pe-4 text-secondary   fw-semibold text-decoration-none"
+                >
+                  {/* {JSON.parse(auth).username} */}
+                 
+                 { auth.data.user.email}
                 </Link>{" "}
-              </> 
+              </>
             ) : (
               <>
                 <Link
