@@ -106,7 +106,7 @@ const SingnUp = () => {
                   className="btn btn-primary mb-5"
                   onClick={handleSave}
                 >
-                  Sign Up
+                  Register
                 </button>
                 <ToastContainer />
               </form>

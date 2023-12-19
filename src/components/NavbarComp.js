@@ -2,7 +2,11 @@ import React from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const NavbarComp = () => {
   // const auth = localStorage.getItem("user");
@@ -20,12 +24,13 @@ const NavbarComp = () => {
     console.log("User data not found in localStorage");
   }
 
-  console.log(auth) 
+  console.log(auth)
   const navigate = useNavigate();
   const logout = () => {
     console.log("user logout");
+    toast.success('User Logout Successfully!');
     localStorage.clear();
-    navigate("/signup");
+    navigate("/register");
   };
 
   return (
@@ -58,49 +63,58 @@ const NavbarComp = () => {
                 >
                   Add Product
                 </Link>
-                <Link
+                {/* <Link
                   to="/update-product/:_id"
                   className="py-2 ps-3 pe-4 fw-semibold text-decoration-none"
                 >
                   Update Product
-                </Link>
-                <Link
+                </Link> */}
+                {/* <Link
                   to="/profile"
                   className="py-2 ps-3 pe-4 fw-semibold text-decoration-none"
                 >
                   Profile
-                </Link>
+                </Link> */}
+                <NavDropdown title="Profile" className=" ps-3 fw-semibold pe-4 " id="basic-nav-dropdown">
+                  <NavDropdown.Item href="/"  className="py-2 ps-3 pe-4 text-secondary   fw-semibold text-decoration-none">Name :  {auth.data.user.username}</NavDropdown.Item>
+                 
+                  <NavDropdown.Item href="/"  className="py-2 ps-3 pe-4 text-secondary   fw-semibold text-decoration-none">Email : {auth.data.user.email}</NavDropdown.Item>
+                 
+                </NavDropdown>
                 <Link
-                  to="/signup"
+                  to="/register"
+
                   onClick={logout}
                   className="py-2 ps-3 pe-4 fw-semibold text-decoration-none"
                 >
                   Logout
                 </Link>
-                <Link
+                {/* <Link
                   to="/"
                   className="py-2 ps-3 pe-4 text-secondary   fw-semibold text-decoration-none"
                 >
-                  {/* {JSON.parse(auth).username} */}
-                 { auth.data.user.username}
-               
+                  {JSON.parse(auth).username}
+                  {auth.data.user.username}
+
                 </Link>
                 <Link
                   to="/"
                   className="py-2 ps-3 pe-4 text-secondary   fw-semibold text-decoration-none"
                 >
-                  {/* {JSON.parse(auth).username} */}
-                 
-                 { auth.data.user.email}
-                </Link>{" "}
+                  {JSON.parse(auth).username}
+
+                  {auth.data.user.email}
+                </Link> */}
+                
+                {" "}
               </>
             ) : (
               <>
                 <Link
-                  to="/signup"
+                  to="/register"
                   className="py-2 ps-3 pe-4 fw-semibold text-decoration-none"
                 >
-                  Sign Up
+                  Register
                 </Link>
                 <Link
                   to="/login"

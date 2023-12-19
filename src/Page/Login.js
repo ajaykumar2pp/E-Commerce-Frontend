@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -24,10 +27,11 @@ const Login = () => {
       });
 
       console.log(response.data);
-      alert("Login User");
+      toast.success('User Login Successfully!');
       localStorage.setItem("user", JSON.stringify(response.data));
       navigate("/product");
     } catch (error) {
+      toast.error(`Error registering user: ${error.message}`);
       console.error("Plz Enter Correct Details", error);
     }
     // Reset the form inputs
@@ -83,7 +87,7 @@ const Login = () => {
                 className="btn btn-primary mb-5"
                 onClick={handleSave}
               >
-                Sign In
+                Login
               </button>
             </form>
           </div>

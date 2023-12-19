@@ -16,12 +16,14 @@ import Product from "./Page/Product";
 import AddProduct from "./Page/AddProduct";
 import UpdateProduct from "./Page/UpdateProduct";
 import NavbarComp from "./components/NavbarComp";
-import FooterComp from "./components/FooterComp";
+import { ToastContainer } from 'react-toastify';
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <NavbarComp />
+    <ToastContainer/>
     <Routes>
 
       <Route element={<PrivateComp />}>
@@ -33,11 +35,11 @@ root.render(
         <Route path="/update-product/:_id" element={<UpdateProduct />} />
       </Route>
 
-      <Route path="/signup" element={<SingnUp />} />
+      <Route path="/register" element={<SingnUp />} />
       <Route path="/login" element={<Login />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
-    <FooterComp />
+    {/* <FooterComp /> */}
   </BrowserRouter>
 );
 
