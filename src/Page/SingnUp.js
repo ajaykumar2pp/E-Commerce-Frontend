@@ -1,120 +1,131 @@
-import React, { useState,useEffect } from "react";
+import React, {  useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useFormik } from 'formik';
+import { validationRegisterSchema } from '../validation/registerSchema';
+import Form from 'react-bootstrap/Form';
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const SingnUp = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const isAuthenticated  = !!localStorage.getItem("user");
 
-
-
-  useEffect(()=>{
-    const auth = localStorage.getItem("user");
-    if(auth){
-      navigate('/login')
-    }
-  },[])
-
-  const handleSave = async (e) => {
-    console.log(name, email, password);
-    e.preventDefault();
-    try {
-      const response = await axios.post("http://localhost:8500/register", {
-        username: name,
-        email: email,
-        password: password,
-      });
-  
-      console.log(response.data);
-      toast("User Register Sccessfully");
-      // alert("Add User");
-      localStorage.setItem("user", JSON.stringify(response.data));
+  useEffect(() => {
+    if (isAuthenticated ) {
       navigate("/login");
-    } catch (error) {
-      console.error("Error during API call:", error);
     }
-// Reset the form inputs
-    setName("");
-    setEmail("");
-    setPassword("");
-  };
+  }, [isAuthenticated ]);
+
+  const { handleChange, handleSubmit, handleBlur, touched, values, errors } = useFormik({
+    initialValues: {
+      username:'',
+      email: '',
+      password: '',
+    },
+    validationSchema: validationRegisterSchema, 
+    onSubmit: async (values, action) => {
+      console.log(values);
+
+      try {
+        const response = await axios.post("http://localhost:8500/register", {
+          username: values.username,
+          email: values.email,
+          password: values.password,
+        });
+
+        console.log(response.data);
+        toast.success('User Register Successfully!');
+        localStorage.setItem("user", JSON.stringify(response.data));
+        navigate("/product");
+      } catch (error) {
+        toast.error(`Error registering user: ${error.message}`);
+        console.error('Error logging in:', error.message);
+      } finally {
+        action.resetForm();
+      }
+    },
+  });
+
+
 
   return (
     <>
-     
-      <div className="">
-        <h2 className="text-center App">Register User</h2>
-        <div className="container">
-          <div className="row d-flex justify-content-center">
-            <div className="col-md-8 ">
-              {/* form   */}
-              <form className="mb-5 border border-primary p-4 m-3 rounded">
-                {/* name  */}
-                <div className="mb-3">
-                  <label htmlFor="name" className="form-label">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="name"
-                    name="name"
-                    placeholder="Enter Your Name"
-                    aria-describedby="nameUser"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </div>
-                {/* email */}
-                <div className="mb-3">
-                  <label htmlFor="name" className="form-label">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="email"
-                    name="email"
-                    placeholder="Enter Your Email"
-                    aria-describedby="eamilUser"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-                {/* password */}
-                <div className="mb-3">
-                  <label htmlFor="name" className="form-label">
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="password"
-                    name="password"
-                    placeholder="Enter Your Password"
-                    aria-describedby="passoword"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
+      <div className="container-fluid" id="registerBG">
+        <div className="row d-flex justify-content-center">
+          <div className="col-md-6 ">
+            <h2 className="text-center App mt-3">Register User</h2>
+            {/* form   */}
+            <Form className="mb-5 border border-primary p-4 m-3 rounded"onSubmit={handleSubmit}>
+              {/* name  */}
+              <div className="mb-3">
+              <Form.Label> Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  className="form-control"
+                  id="username"
+                  name="username"
+                  placeholder="Enter Your Name"
+                  value={values.username}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  isInvalid={touched.username && errors.username}
+                />
+                 <Form.Control.Feedback type="invalid">
+                  {errors.username}
+                </Form.Control.Feedback>
+              </div>
+              {/* email */}
+              <div className="mb-3">
+              <Form.Label> Email</Form.Label>
+                <Form.Control
+                  type="text"
+                  className="form-control "
+                  id="email"
+                  name="email"
+                  placeholder="Enter Your Email"
+                  value={values.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  isInvalid={touched.email && errors.email}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.email}
+                </Form.Control.Feedback>
+              </div>
+              {/* password */}
+              <div className="mb-3">
+              <Form.Label>  Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  className="form-control"
+                  id="password"
+                  name="password"
+                  placeholder="Enter Your Password"
+                  value={values.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  isInvalid={touched.password && errors.password}
+                />
+                <Form.Control.Feedback  type="invalid">
+                  {errors.password}
+                </Form.Control.Feedback>
+              </div>
+              <div className="d-grid gap-2 col-6 text-center mx-auto">
                 <button
                   type="submit"
-                  className="btn btn-primary mb-5"
-                  onClick={handleSave}
+                  className="btn btn-primary  mb-4   text-opacity-75"
+                  
                 >
                   Register
                 </button>
-                <ToastContainer />
-              </form>
-            </div>
+              </div>
+            </Form>
           </div>
         </div>
       </div>
-      
+
+
     </>
   );
 };
