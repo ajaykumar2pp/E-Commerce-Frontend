@@ -21,10 +21,10 @@ const NavbarComp = () => {
     console.log(`Username: ${username}`);
     console.log(`Email: ${email}`);
   } else {
-    console.log("User data not found in localStorage");
+    // console.log("User data not found in localStorage");
   }
 
-  console.log(auth)
+  // console.log(auth)
   const navigate = useNavigate();
   const logout = () => {
     console.log("user logout");

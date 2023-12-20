@@ -41,7 +41,21 @@ const Login = () => {
         localStorage.setItem("user", JSON.stringify(response.data));
         navigate("/product");
       } catch (error) {
-        toast.error(`Error registering user: ${error.message}`);
+        if (error.response) {
+          if (error.response.status === 404) {
+            // User not found
+            toast.error('User Not Found. Please check your email.');
+          } else if (error.response.status === 401) {
+            // Invalid password
+            toast.error('Invalid Password. Please try again.');
+          } else {
+            // Other server errors
+            toast.error(`Error logging in: ${error.message}`);
+          }
+        } else {
+          // Network errors or other issues
+          toast.error(`Error logging in: ${error.message}`);
+        }
         console.error('Error logging in:', error.message);
       } finally {
         action.resetForm();

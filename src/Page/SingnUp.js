@@ -39,8 +39,19 @@ const SingnUp = () => {
         localStorage.setItem("user", JSON.stringify(response.data));
         navigate("/product");
       } catch (error) {
-        toast.error(`Error registering user: ${error.message}`);
-        console.error('Error logging in:', error.message);
+        
+        if (error.response && error.response.data && error.response.data.message) {
+          const errorMessage = error.response.data.message;
+    
+          if (errorMessage.toLowerCase().includes("email") && errorMessage.toLowerCase().includes("already")) {
+            toast.error('This email is already registered.');
+          } else {
+            toast.error(`Error registering user: ${errorMessage}`);
+          }
+        } else {
+          toast.error(`Error registering user: ${error.message}`);
+        }
+        console.error('Error registering in:', error.message);
       } finally {
         action.resetForm();
       }
