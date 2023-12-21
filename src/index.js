@@ -17,6 +17,7 @@ import AddProduct from "./Page/AddProduct";
 import UpdateProduct from "./Page/UpdateProduct";
 import NavbarComp from "./components/NavbarComp";
 import { ToastContainer } from 'react-toastify';
+import ProductDetail from "./Page/ProductDetail";
 
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -31,6 +32,7 @@ root.render(
         <Route path="/add-product" element={<AddProduct />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/product" element={<Product />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/update-product/:_id" element={<UpdateProduct />} />
       </Route>
