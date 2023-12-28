@@ -10,7 +10,22 @@ const AddProduct = () => {
   const [company, setCompany] = useState("");
   const [image, setImage] = useState(null)
   const [error, setError] = useState(false)
+  const [imagePreview, setImagePreview] = useState(null);
   const navigate = useNavigate();
+
+  const handleFileChange = (e) => {
+    const selectedImage = e.target.files[0];
+
+    // Display image preview
+    if (selectedImage) {
+      setImagePreview(URL.createObjectURL(selectedImage));
+    } else {
+      setImagePreview(null);
+    }
+
+    // Update state with selected image
+    setImage(selectedImage);
+  };
 
 
   const handleSave = async (e) => {
@@ -24,6 +39,9 @@ const AddProduct = () => {
       const userId = JSON.parse(localStorage.getItem("user")).data.user._id;
       console.log(userId);
 
+      setImagePreview(URL.createObjectURL(image));
+      
+
       // Use FormData to send multipart/form-data
       const formData = new FormData();
       formData.append("name", name);
@@ -33,23 +51,23 @@ const AddProduct = () => {
       formData.append("userId", userId);
       formData.append("image", image);
 
-      let response = await axios.post("http://localhost:8500/products/add-product",
-      formData, {
+      const  response = await axios.post("http://localhost:8500/products/add-product",
+        formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         }
       });
-        // {
-        //   name: name,
-        //   price: price,
-        //   quantity: quantity,
-        //   company: company,
-        //   userId: userId,
-        //   image: image
-        // },
-        // headers: {
-        //   "Content-Type": "multipart/form-data",
-        // }
+      // {
+      //   name: name,
+      //   price: price,
+      //   quantity: quantity,
+      //   company: company,
+      //   userId: userId,
+      //   image: image
+      // },
+      // headers: {
+      //   "Content-Type": "multipart/form-data",
+      // }
       // );
 
       console.log(response.data);
@@ -65,6 +83,7 @@ const AddProduct = () => {
     setQuantity("");
     setCompany("");
     setImage(null);
+    setImagePreview(null);
   };
 
   return (
@@ -155,12 +174,22 @@ const AddProduct = () => {
                   className="form-control"
                   id="image"
                   name="image"
-
                   aria-describedby="image"
-
-                  onChange={(e) => setImage(e.target.files[0])}
+                  onChange={handleFileChange}
+                // onChange={(e) => {
+                // setImage(e.target.files[0]);
+                //  setIsImageSelected(false);}}
                 />
+                
                 {error && !image && <div className="valid text-danger">Plz upload image</div>}
+              </div>
+              <div>
+              {imagePreview && (
+                  <div className="mb-3">
+                    <label className="form-label">Image Preview</label>
+                    <img src={imagePreview} alt="Preview" className="img-preview img-fluid" />
+                  </div>
+                )}
               </div>
               <button
                 type="submit"
@@ -181,34 +210,4 @@ const AddProduct = () => {
 
 export default AddProduct;
 
-// const collectData= async()=>{
-//   console.log(name,email,password);
-//   let result =await fetch("http://localhost:8500/register",{
-//     method:'post',
-//     body:JSON.stringify({name,email,password}),
-//     headers:{
-//       'Content-Type':'application/json'
-//     }
-//   });
-//   result =await result.json();
-//   console.log(result)
-//   localStorage.setItem("user",JSON.stringify(result));
 
-// }
-
-// axios.post("http://localhost:8500/register", {
-//         username:name,
-//         email:email,
-//         password:password
-
-//       })
-//       .then((userData) => {
-//         let data = userData.data;
-//         console.log(data)
-//         alert("Add User");
-//         localStorage.setItem("user",JSON.stringify(data))
-//         navigate("/");
-//       });
-//       setName(" ");
-//       setEmail(" ");
-//       setPassword(" ");

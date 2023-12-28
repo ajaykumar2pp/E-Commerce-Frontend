@@ -11,9 +11,25 @@ const UpdateProduct = () => {
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [company, setCompany] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const [image, setImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const navigate = useNavigate();
+
+  const handleImageChange = (e) => {
+    const selectedImage = e.target.files[0];
+
+    // Update image state
+    setImage(selectedImage);
+
+    // Create preview URL
+    const previewURL = URL.createObjectURL(selectedImage);
+
+    // Update previewImage state
+    setPreviewImage(previewURL);
+  };
+
+
   const params = useParams()
 
   useEffect(() => {
@@ -26,10 +42,11 @@ const UpdateProduct = () => {
       const response = await fetch(`http://localhost:8500/products/${params._id}`);
       const data = await response.json();
       console.log("Single Product data:", data);
-      setName(data.name)
-      setPrice(data.price)
-      setQuantity(data.quantity)
-      setCompany(data.company)
+      setName(data.name);
+      setPrice(data.price);
+      setQuantity(data.quantity);
+      setCompany(data.company);
+      setImageUrl(data.image);
     } catch (error) {
       console.error("Error fetching product data:", error);
 
@@ -37,7 +54,7 @@ const UpdateProduct = () => {
   };
 
   const updateProduct = async (e) => {
-    console.log(name, price, quantity, company);
+    console.log(name, price, quantity, company,image);
     e.preventDefault();
 
     try {
@@ -47,8 +64,9 @@ const UpdateProduct = () => {
       formData.append("quantity", quantity);
       formData.append("company", company);
       formData.append("image", image);
+    
 
-      let response = await axios.put(
+      const response = await axios.put(
         `http://localhost:8500/products/${params._id}`,
         formData
         // {
@@ -66,12 +84,14 @@ const UpdateProduct = () => {
     } catch (error) {
       console.error("Error during API call:", error);
     }
+
     // Reset the form inputs
     setName(" ");
     setPrice(" ");
     setQuantity(" ");
     setCompany(" ");
     setImage(null);
+    setPreviewImage(null);
   };
 
   return (
@@ -162,20 +182,43 @@ const UpdateProduct = () => {
                   id="image"
                   name="image"
                   aria-describedby="image"
-                  onChange={
-                    (e) => 
-                    {
-                      setImage(e.target.files[0]);
-                      const url = URL.createObjectURL(e.target.files[0]);
-                      setPreviewImage(url);
-                    }
-                  }
+                  accept="image/*"
+                  onChange={handleImageChange}
+                // onChange={
+                //   (e) => 
+                //   {
+                //     setImage(e.target.files[0]);
+                //     const url = URL.createObjectURL(e.target.files[0]);
+                //     setPreviewImage(url);
+                //   }
+                // }
                 />
+              </div>
+              <div className="d-flex justify-content-between">
+
+                <div >
+                  {/* Previous Image */}
+                  {imageUrl && (
+                    <div className="mb-3 img-preview-container">
+                      <label className="form-label img-preview-label">Previous Image</label>
+                      <img src={imageUrl} alt="Previous Product Image" className="preview-image mb-2 img-fluid" />
+                    </div>
+                  )}
+                </div>
+                <div>
+                  {/* Newly Selected Image Preview */}
+                  {previewImage && (
+                    <div className="mb-3 img-preview-container">
+                      <label className="form-label img-preview-label">Upload Image Preview</label>
+                      <img src={previewImage} alt="Product Preview" className="preview-image mb-2 img-fluid" />
+                    </div>
+
+                  )}
+                </div>
+
 
               </div>
-              {previewImage && (
-                <img src={previewImage} alt="Product Preview" className="preview-image" />
-              )}
+
               <button
                 type="submit"
                 className="btn btn-success mb-5"
